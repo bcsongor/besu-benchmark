@@ -1,0 +1,13 @@
+count = 100
+batchSize = 10
+
+[node1]
+rpc = "http://localhost:8545"
+address = "0x57d2c1292c1faaf9ea3535650cb7750c4116241f"
+publicKey = "UIrjyyf+i67bNxCRxfIzeYAcrrzqKg+ZVLFa/TP9kkc="
+privateKey = "77d2e57e0a746ee9525978f6ee7143b76c6cf363584a34e6d079d1b0d9f087e1"
+
+[node2]
+rpc = "http://localhost:8546"
+publicKey = "99puAyex3Ff3c99b8XWlMD0W1HF19AWckg3O7XQZXyc="
+privateKey = "86354548971ffeed1da84ca7bf50ab38981047e77f71195216601eb0136e592a"
