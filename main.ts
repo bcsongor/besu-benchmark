@@ -1,11 +1,12 @@
 import * as fs from 'fs';
 import * as toml from 'toml';
-import { EEAPrivateContract, PrivateContractTxOptions } from './eea';
+import { EEAPrivateContract, PrivateContractTxOptions, privateKeyToAddress } from './eea';
 
 (async function main() {
     const config = toml.parse(fs.readFileSync('./config.toml', 'utf8'));
 
     const privacyOptions: PrivateContractTxOptions = {
+        from: privateKeyToAddress(config.node1.privateKey),
         privateFrom: config.node1.publicKey,
         privateFor: [config.node2.publicKey],
         privateKey: config.node1.privateKey
@@ -19,14 +20,14 @@ import { EEAPrivateContract, PrivateContractTxOptions } from './eea';
 
     const sendTxOptions: PrivateContractTxOptions = { ...privacyOptions, to: address };
 
-    // Store n key-value pairs in the private contract.
-    console.time('store');
-
     const { count, batchSize } = config;
     const keys = [...Array(count)].map((_, i: number) => `key${i}`);
     const values = [...Array(count)].map((_, i: number) => `value${i}`);
 
+    // Store n key-value pairs in the private contract.
     let offset = 0;
+
+    console.time('store');
 
     console.log(`Storing ${count} key-value pairs`);
     while (offset < count) {
@@ -40,4 +41,21 @@ import { EEAPrivateContract, PrivateContractTxOptions } from './eea';
     }
 
     console.timeEnd('store');
-)().then();
+
+    // Read n key-value pairs from the private contract.
+    offset = 0;
+
+    console.time('get');
+
+    console.log(`Reading ${count} key-value pairs`);
+    while (offset < count) {
+        const keysBatch = keys.slice(offset, offset + batchSize);
+
+        console.log(`Retrieving batch ${offset}..${offset + batchSize}`);
+        await contract.send('get', [keysBatch], sendTxOptions);
+        console.log(`Retrieved batch ${offset}..${offset + batchSize}`);
+        offset += config.batchSize;
+    }
+
+    console.timeEnd('get');
+})().then();

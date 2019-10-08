@@ -4,6 +4,10 @@
 
 # Hyperledger Besu benchmarks
 
+## TypeScript wrapper
+
+This repository includes [eea.ts](eea.ts), a lightweight TypeScript wrapper around PegaSys's web3.js EEA extensions and private smart contract operations. See [main.ts](main.ts) for example usage.
+
 ## Environment
 
 - **VM:** Azure D2s_v3 (2 vCPU, 8 GB)
@@ -16,7 +20,8 @@
 
 ### [KeyValueStore](./contract/KeyValueStore.sol)
 
-| Key-value pairs | Batch size | Parallel? | Store       | Get       |
-|-----------------|------------|-----------|-------------|-----------|
-| 100             | 10         | ❌        | 25955.590ms |           |
-| 100             | 50         | ❌        | 50390.871ms |           |
+| Key-value pairs | Batch size | Parallel? | Store       | Fetch       |
+|-----------------|------------|-----------|-------------|-------------|
+| 100             | 5          | ❌        | 54432.529ms | 52249.685ms |
+| 100             | 10         | ❌        | 26855.693ms | 25716.169ms |
+| 100             | 50         | ❌        | 58093.335ms | 37195.854ms |

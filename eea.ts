@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import Web3 = require('web3');
-import Web3EEA = require('web3-eea');
+export import Web3 = require('web3');
+export import Web3EEA = require('web3-eea');
+import { privateToAddress } from 'web3-eea/src/custom-ethjs-util';
 
 export interface PrivateContractTxOptions {
     privateFrom: string;
@@ -9,7 +10,8 @@ export interface PrivateContractTxOptions {
     privateKey: string;
     to?: string;
     from?: string;
-    // Potential validation bug for private transactions: https://github.com/hyperledger/besu/blob/bac5c673d3603b2aba70b7ffd77afd57a44775c8/ethereum/core/src/main/java/org/hyperledger/besu/ethereum/privacy/PrivateTransactionValidator.java#L61
+    // Validation constraint for private transactions: 
+    // https://github.com/hyperledger/besu/blob/master/ethereum/core/src/main/java/org/hyperledger/besu/ethereum/privacy/PrivateTransactionValidator.java#L61
     nonce?: number;
 }
 
@@ -79,21 +81,16 @@ export class EEAPrivateContract implements PrivateContract {
         return this.web3.priv.getTransactionReceipt(txHash, options.privateFrom);
     }
 
-    public async nextNonce(options: PrivateContractTxOptions): Promise<number> {
-        const txCount = await this.web3.priv.getTransactionCount({
-            from: options.from,
-            privateFrom: options.privateFrom,
-            privateFor: options.privateFor
-        });
-
-        return txCount;
-    }
-
     public decodeOutput(fn: string, bytecode: string) {
         const functionAbi = this.contract._jsonInterface.find((e: any) => e.name === fn);
         const types = functionAbi.outputs.map((e: any) => e.type);
 
         return this.web3.eth.abi.decodeParameters(types, bytecode);
     }
+}
+
+export function privateKeyToAddress(privateKey: string): string {
+    const hexPrivateKey = privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`;
+    return `0x${privateToAddress(hexPrivateKey).toString('hex')}`;
 }
 

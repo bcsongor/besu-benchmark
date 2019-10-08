@@ -1,28 +1,27 @@
-pragma solidity >=0.4.22;
+pragma solidity >=0.5.11;
 pragma experimental ABIEncoderV2;
 
 contract KeyValueStore {
     event Stored(string indexed key);
-    event Removed(string indexed key);
 
     mapping(string => string) store;
 
-    /// Puts $(value) in the key-value store using $(key).
-    function put(string[] memory key, string[] memory value) public {
-        for (uint256 i = 0; i < key.length; i++) {
-            store[key[i]] = value[i];
-            emit Stored(key[i]);
+    /// Puts $(values) in the key-value store using $(keys).
+    function put(string[] memory keys, string[] memory values) public {
+        for (uint256 i = 0; i < keys.length; i++) {
+            store[keys[i]] = values[i];
+            emit Stored(keys[i]);
         }
     }
 
-    /// Retrieves a value from the key-value store using $(key).
-    function get(string memory key) public view returns (string memory) {
-        return store[key];
-    }
+    /// Retrieves values from the key-value store using $(keys).
+    function get(string[] memory keys) public view returns (string[] memory) {
+        string[] memory values = new string[](keys.length);
+ 
+        for (uint256 i = 0; i < keys.length; i++) {
+            values[i] = store[keys[i]];
+        }
 
-    /// Deletes a value from the key-value store using $(key).
-    function del(string memory key) public {
-        store[key] = "";
-        emit Removed(key);
+        return values;
     }
 }

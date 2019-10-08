@@ -1,9 +1,8 @@
 count = 100
-batchSize = 10
+batchSize = 5
 
 [node1]
 rpc = "http://localhost:8545"
-address = "0x57d2c1292c1faaf9ea3535650cb7750c4116241f"
 publicKey = "UIrjyyf+i67bNxCRxfIzeYAcrrzqKg+ZVLFa/TP9kkc="
 privateKey = "77d2e57e0a746ee9525978f6ee7143b76c6cf363584a34e6d079d1b0d9f087e1"
 
