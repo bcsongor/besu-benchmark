@@ -4,11 +4,15 @@
 
 # Hyperledger Besu benchmarks
 
-## TypeScript wrapper
+## Contents
 
-This repository includes [eea.ts](eea.ts), a lightweight TypeScript wrapper around PegaSys's web3.js EEA extensions and private smart contract operations. See [main.ts](main.ts) for example usage.
+- [eea.ts](eea.ts), a lightweight TypeScript wrapper around PegaSys's web3.js EEA extensions and private smart contract operations. See [main.ts](main.ts) for example usage;
+- [rpc.py](scripts/rpc.py), a utility script to help interact with Besu's JSON RPC.
+Usage: `./rpc.py <method> <params> <endpoint>`, for example `./rpc.py admin_nodeInfo`.
 
-## Environment
+## Benchmark
+
+### Environment
 
 - **VM:** Azure D2s_v3 (2 vCPU, 8 GB)
 - **OS:** Ubuntu 18.04 LTS
@@ -16,9 +20,9 @@ This repository includes [eea.ts](eea.ts), a lightweight TypeScript wrapper arou
   - Hyperledger Besu 1.2.4 
   - Orion 1.4.0
 
-## Results
+### Results
 
-### [KeyValueStore](./contract/KeyValueStore.sol)
+#### [KeyValueStore](./contract/KeyValueStore.sol)
 
 | Key-value pairs | Batch size | Parallel? | Store       | Fetch       |
 |-----------------|------------|-----------|-------------|-------------|
